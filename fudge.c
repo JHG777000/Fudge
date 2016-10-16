@@ -597,7 +597,7 @@ fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, 
             
         case 2:
             
-            if ( fudge_is_class_superclass_of_class(cls, method_class) ) return ref->method ;
+            if ( (fudge_is_class_superclass_of_class(cls, method_class)) || (cls == method_class) ) return ref->method ;
             
             break;
             
