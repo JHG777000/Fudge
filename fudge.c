@@ -558,6 +558,20 @@ void fudge_add_class_method( fudge_method method, const char* name, fudge_class 
 
 }
 
+int fudge_is_class_superclass_of_class( fudge_class superclass, fudge_class subclass ) {
+    
+    RKList_node node = RKList_GetFirstNode(subclass->superclass_refs) ;
+    
+    while ( node != NULL ) {
+        
+        if ( RKList_GetData(node) == superclass ) return 1 ;
+        
+        node = RKList_GetNextNode(node) ;
+    }
+    
+    return 0 ;
+}
+
 fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, const char* name ) {
     
     fudge_method_ref ref = NULL ;
@@ -583,7 +597,7 @@ fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, 
             
         case 2:
             
-            if ( cls == method_class ) return ref->method ;
+            if ( fudge_is_class_superclass_of_class(cls, method_class) ) return ref->method ;
             
             break;
             

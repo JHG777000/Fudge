@@ -644,6 +644,8 @@ void fudge_add_final_method( const char* name, fudge_class cls ) ;
 
 void fudge_add_class_method(fudge_method method, const char* name, fudge_class cls, int mode ) ;
 
+int fudge_is_class_superclass_of_class( fudge_class superclass, fudge_class subclass ) ;
+
 fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, const char* name ) ;
 
 void fudge_add_final_class_method( const char* name, fudge_class cls ) ;
