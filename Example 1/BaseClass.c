@@ -32,6 +32,8 @@ end_method
 
 new_class(BaseClass) {
     
+    make_class_type_of(BaseClass) ;
+    
     make_method_init(my_init_method) ;
     
     make_method_deinit(my_deinit_method) ;

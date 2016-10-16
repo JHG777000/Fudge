@@ -72,7 +72,7 @@ start_method( my_method, arg(myint,int) arg(myint2, int) )
 
     m(obj, my_private_method, ints(myint)) ;
 
-    m(obj, my_private_method, ints(myint2)) ;
+    fm(obj, my_private_method, ints(myint2)) ;
 
     StringClass string = new_object(StringClass, strings("My String!\n")) ;
 
@@ -103,8 +103,6 @@ end_method
 new_class(TestClass) {
     
     make_class_subclass_of(BaseClass) ;
-    
-    make_class_type_of(BaseClass) ;
     
     make_method_init(my_init_method) ;
     
