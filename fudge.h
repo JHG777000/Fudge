@@ -608,9 +608,9 @@ AnyClass fudge_store_object_protected( AnyClass obj1, AnyClass obj2, const char*
 
 AnyClass fudge_get_object_public( AnyClass obj, const char* name ) ;
 
-AnyClass fudge_get_object_private( AnyClass obj, const char* name, fudge_class cls ) ;
+AnyClass fudge_get_object_private( AnyClass obj, const char* name, fudge_class access_class ) ;
 
-AnyClass fudge_get_object_protected( AnyClass obj, const char* name, fudge_class cls ) ;
+AnyClass fudge_get_object_protected( AnyClass obj, const char* name, fudge_class access_class ) ;
 
 void fudge_add_ref_count( AnyClass obj ) ;
 
@@ -638,7 +638,7 @@ void fudge_add_final_deinit_method( fudge_method method, fudge_class cls ) ;
 
 void fudge_add_method( fudge_method method, const char* name, fudge_class cls, int mode ) ;
 
-fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class cls) ;
+fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class access_class) ;
 
 void fudge_add_final_method( const char* name, fudge_class cls ) ;
 
@@ -646,7 +646,7 @@ void fudge_add_class_method(fudge_method method, const char* name, fudge_class c
 
 int fudge_is_class_superclass_of_class( fudge_class superclass, fudge_class subclass ) ;
 
-fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, const char* name ) ;
+fudge_method fudge_get_class_method( fudge_class cls, fudge_class access_class, const char* name ) ;
 
 void fudge_add_final_class_method( const char* name, fudge_class cls ) ;
 

@@ -17,7 +17,6 @@
 
 #include <string.h>
 #include "fudge.h"
-#include "RKArgs.h"
 
 struct fudge_class_s { RKArgs_Dynamic_Type_Protocol ; void* fast_data_structure ; void* fudge_type_array ;
     
@@ -31,13 +30,13 @@ struct fudge_object_s { RKArgs_Dynamic_Type_Protocol ; void* fast_data_structure
     
 RKStore protected_data ; RKStore public_refs ; RKStore private_refs ; RKStore protected_refs ; int refcount ; } ;
 
-struct fudge_ref_s { int strong ; AnyClass obj ; AnyClass base_obj ; fudge_class private_data_class ; } ;
+struct fudge_ref_s { int strong ; AnyClass obj ; AnyClass base_obj ; fudge_class class_of_origin ; } ;
 
 typedef struct fudge_ref_s* fudge_ref ;
 
-typedef struct fudge_data_ref_s { void* data ; fudge_class private_data_class ; } *fudge_data_ref ;
+typedef struct fudge_data_ref_s { void* data ; fudge_class class_of_origin ; } *fudge_data_ref ;
 
-typedef struct fudge_method_ref_s { fudge_method method ; int mode ; fudge_class private_data_class ; } *fudge_method_ref ;
+typedef struct fudge_method_ref_s { fudge_method method ; int mode ; fudge_class class_of_origin ; } *fudge_method_ref ;
 
  RKLong fudge_default_func(RKArgs external_arglist, const AnyClass obj, const fudge_class iclass, RKArgs method_arglist) {
     
@@ -73,7 +72,7 @@ AnyClass fudge_object_alloc( fudge_classdef the_classdef, RKArgs arglist ) {
     
     fudge_method init = (obj->class_of_object->final_init != get_null_method) ? obj->class_of_object->final_init : obj->class_of_object->init ;
     
-    fudge_call_method(init, arglist, (AnyClass)obj,noargs) ;
+    fudge_call_method(init, arglist, (AnyClass)obj, noargs) ;
     
     end_arglist(arglist) ;
     
@@ -120,7 +119,7 @@ void fudge_object_dealloc( AnyClass obj ) {
     
     fudge_method deinit = (obj->class_of_object->final_deinit != get_null_method) ? obj->class_of_object->final_deinit : obj->class_of_object->deinit ;
     
-    fudge_call_method(deinit, NULL, (AnyClass)obj,noargs) ;
+    fudge_call_method(deinit, NULL, (AnyClass)obj, noargs) ;
     
     obj->class_of_object->the_classdef(-1, NULL) ;
     
@@ -174,7 +173,7 @@ AnyClass fudge_store_object_public( AnyClass obj1, AnyClass obj2, const char* na
     
     ref->obj = obj2 ;
     
-    ref->private_data_class = NULL ;
+    ref->class_of_origin = NULL ;
     
     if ( (ref->strong) && (obj1 != obj2) ) add_ref_count(ref->obj) ;
     
@@ -198,7 +197,7 @@ AnyClass fudge_store_object_private( AnyClass obj1, AnyClass obj2, const char* n
             
             fudge_ref ref = RKStore_GetItem(obj1->private_refs, name) ;
             
-            if (ref->private_data_class != cls) return obj2 ;
+            if (ref->class_of_origin != cls) return obj2 ;
             
             if ( (ref->strong) && (ref->obj != obj1) && (ref->obj != obj2) ) sub_ref_count(ref->obj) ;
             
@@ -213,7 +212,7 @@ AnyClass fudge_store_object_private( AnyClass obj1, AnyClass obj2, const char* n
     
     ref->obj = obj2 ;
     
-    ref->private_data_class = cls ;
+    ref->class_of_origin = cls ;
     
     if ( (ref->strong) && (obj1 != obj2) ) add_ref_count(ref->obj) ;
 
@@ -245,7 +244,7 @@ AnyClass fudge_store_object_protected( AnyClass obj1, AnyClass obj2, const char*
     
     ref->obj = obj2 ;
     
-    ref->private_data_class = NULL ;
+    ref->class_of_origin = NULL ;
     
     if ( (ref->strong) && (obj1 != obj2) ) add_ref_count(ref->obj) ;
     
@@ -263,20 +262,20 @@ AnyClass fudge_get_object_public( AnyClass obj, const char* name ) {
     return ref->obj ;
 }
 
-AnyClass fudge_get_object_private( AnyClass obj, const char* name, fudge_class cls ) {
+AnyClass fudge_get_object_private( AnyClass obj, const char* name, fudge_class access_class ) {
     
     fudge_ref ref = RKStore_GetItem(obj->public_refs, name) ;
     
     if ( ref == NULL ) return NULL ;
     
-    if ( ref->private_data_class != cls ) return NULL ;
+    if ( ref->class_of_origin != access_class ) return NULL ;
     
     return ref->obj ;
 }
 
-AnyClass fudge_get_object_protected( AnyClass obj, const char* name, fudge_class cls ) {
+AnyClass fudge_get_object_protected( AnyClass obj, const char* name, fudge_class access_class ) {
     
-    if ( obj->class_of_object != cls ) return NULL ;
+    if ( obj->class_of_object != access_class ) return NULL ;
     
     fudge_ref ref = RKStore_GetItem(obj->public_refs, name) ;
     
@@ -482,7 +481,7 @@ void fudge_add_method( fudge_method method, const char* name, fudge_class cls, i
          
       fudge_method_ref ref = RKMem_NewMemOfType(struct fudge_method_ref_s) ;
     
-      ref->private_data_class = cls ;
+      ref->class_of_origin = cls ;
      
       ref->method = method ;
     
@@ -495,7 +494,7 @@ void fudge_add_method( fudge_method method, const char* name, fudge_class cls, i
     }
 }
 
-fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class cls) {
+fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class access_class) {
     
     fudge_method_ref ref = NULL ;
     
@@ -513,14 +512,14 @@ fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class cls) 
             
         case 1:
             
-            if ( ref->private_data_class == cls ) return ref->method ;
+            if ( ref->class_of_origin == access_class ) return ref->method ;
             
         break;
 
             
         case 2:
             
-            if ( obj->class_of_object == cls ) return ref->method ;
+            if ( obj->class_of_object == access_class ) return ref->method ;
             
         break;
 
@@ -544,7 +543,7 @@ void fudge_add_class_method( fudge_method method, const char* name, fudge_class 
         
         fudge_method_ref ref = RKMem_NewMemOfType(struct fudge_method_ref_s) ;
         
-        ref->private_data_class = cls ;
+        ref->class_of_origin = cls ;
         
         ref->method = method ;
         
@@ -572,7 +571,7 @@ int fudge_is_class_superclass_of_class( fudge_class superclass, fudge_class subc
     return 0 ;
 }
 
-fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, const char* name ) {
+fudge_method fudge_get_class_method( fudge_class cls, fudge_class access_class, const char* name ) {
     
     fudge_method_ref ref = NULL ;
     
@@ -590,14 +589,14 @@ fudge_method fudge_get_class_method( fudge_class cls, fudge_class method_class, 
             
         case 1:
             
-            if ( ref->private_data_class == method_class ) return ref->method ;
+            if ( ref->class_of_origin == access_class ) return ref->method ;
             
             break;
             
             
         case 2:
             
-            if ( (fudge_is_class_superclass_of_class(cls, method_class)) || (cls == method_class) ) return ref->method ;
+            if ( (fudge_is_class_superclass_of_class(ref->class_of_origin, access_class)) || (ref->class_of_origin == access_class) ) return ref->method ;
             
             break;
             
@@ -643,7 +642,7 @@ void* fudge_get_data_from_object( const char* protocol_name, AnyClass obj, fudge
         case 1:
                 data_ref = RKStore_GetItem(obj->private_data, protocol_name) ;
             
-                if (data_ref != NULL) if (data_ref->private_data_class != get_set_cls(NULL)) data_ref = NULL ;
+                if (data_ref != NULL) if (data_ref->class_of_origin != get_set_cls(NULL)) data_ref = NULL ;
             
             break;
             
@@ -667,9 +666,9 @@ void fudge_set_data_for_object( const char* protocol_name, void* ref, AnyClass o
     
     fudge_data_ref data_ref = RKMem_NewMemOfType(struct fudge_data_ref_s) ;
     
-    data_ref->private_data_class = NULL ;
+    data_ref->class_of_origin = NULL ;
     
-    if (get_set_cls != NULL) data_ref->private_data_class = get_set_cls(NULL) ;
+    if (get_set_cls != NULL) data_ref->class_of_origin = get_set_cls(NULL) ;
     
     data_ref->data = ref ;
     
