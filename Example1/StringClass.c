@@ -6,7 +6,7 @@
 //  Copyright © 2016 Jacob Gordon. All rights reserved.
 //
 
-#include "fudge.h"
+#include <fudge.h>
 #include <string.h>
 
 use_class(BaseClass) ;

@@ -20,8 +20,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "RKMem.h"
-#include "RKArgs.h"
+#include <RKLib/RKMem.h>
+#include <RKLib/RKArgs.h>
 
 typedef struct fudge_class_s* fudge_class ;
 

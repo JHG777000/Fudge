@@ -6,9 +6,9 @@
 //  Copyright © 2016 Jacob Gordon. All rights reserved.
 //
 
-#include "fudge.h"
 
 #include <math.h>
+#include <fudge.h>
 
 use_class(Shape) ;
 

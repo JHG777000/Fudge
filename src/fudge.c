@@ -16,7 +16,7 @@
  */
 
 #include <string.h>
-#include "fudge.h"
+#include <fudge.h>
 
 struct fudge_class_s { RKArgs_Dynamic_Type_Protocol ; void* fast_data_structure ; void* fudge_type_array ;
     
