@@ -280,13 +280,19 @@ for_fudge_runtime_make_is_object_of_class_with_classname(classname)
 
 #define make_method_mask(method,methodname) fudge_add_method(method,#methodname,cls,0)
 
+#define make_method_required(methodname) fudge_add_required_method(#methodname,cls,0)
+
 #define make_method_private(method) fudge_add_method(method,#method,cls,1)
 
 #define make_method_mask_private(method,methodname) fudge_add_method(method,#methodname,cls,1)
 
+#define make_method_required_private(methodname) fudge_add_required_method(#methodname,cls,1)
+
 #define make_method_protected(method) fudge_add_method(method,#method,cls,2)
 
 #define make_method_mask_protected(method,methodname) fudge_add_method(method,#methodname,cls,2)
+
+#define make_method_required_protected(methodname) fudge_add_required_method(#methodname,cls,2)
 
 #define make_method_final(methodname) fudge_add_final_method(#methodname,cls)
 
@@ -303,13 +309,19 @@ for_fudge_runtime_make_is_object_of_class_with_classname(classname)
 
 #define make_class_method_mask(method,methodname) fudge_add_class_method((fudge_method)method,#methodname,cls,0)
 
+#define make_class_method_required(methodname) fudge_add_required_class_method(#methodname,cls,0)
+
 #define make_class_method_private(method) fudge_add_class_method((fudge_method)method,#method,cls,1)
 
 #define make_class_method_mask_private(method,methodname) fudge_add_class_method((fudge_method)method,#methodname,cls,1)
 
+#define make_class_method_required_private(methodname) fudge_add_required_class_method(#methodname,cls,1)
+
 #define make_class_method_protected(method) fudge_add_class_method((fudge_method)method,#method,cls,2)
 
 #define make_class_method_mask_protected(method,methodname) fudge_add_class_method((fudge_method)method,#methodname,cls,2)
+
+#define make_class_method_required_protected(methodname) fudge_add_required_class_method(#methodname,cls,2)
 
 #define make_class_method_final(methodname) fudge_add_final_class_method(#methodname,cls)
 
@@ -636,11 +648,15 @@ void fudge_add_final_init_method( fudge_method method, fudge_class cls ) ;
 
 void fudge_add_final_deinit_method( fudge_method method, fudge_class cls ) ;
 
+void fudge_add_required_method( const char* name, fudge_class cls, int mode ) ;
+
 void fudge_add_method( fudge_method method, const char* name, fudge_class cls, int mode ) ;
 
 fudge_method fudge_get_method( AnyClass obj, const char* name, fudge_class access_class) ;
 
 void fudge_add_final_method( const char* name, fudge_class cls ) ;
+
+void fudge_add_required_class_method( const char* name, fudge_class cls, int mode ) ;
 
 void fudge_add_class_method(fudge_method method, const char* name, fudge_class cls, int mode ) ;
 

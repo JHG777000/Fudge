@@ -475,7 +475,30 @@ void fudge_add_final_deinit_method( fudge_method method, fudge_class cls ) {
     if ( cls->final_deinit == get_null_method ) cls->final_deinit = method ;
 }
 
+void fudge_add_required_method( const char* name, fudge_class cls, int mode ) {
+    
+    fudge_method method = NULL ;
+    
+    if ( !(RKStore_ItemExists(cls->final_methods, name)) )  {
+         
+      fudge_method_ref ref = RKMem_NewMemOfType(struct fudge_method_ref_s) ;
+    
+      ref->class_of_origin = cls ;
+     
+      ref->method = method ;
+    
+      ref->mode = mode ;
+    
+      if ( (RKStore_ItemExists(cls->methods, name)) ) free(RKStore_GetItem(cls->methods, name)) ;
+    
+      RKStore_AddItem(cls->methods, ref, name) ;
+        
+    }
+}
+
 void fudge_add_method( fudge_method method, const char* name, fudge_class cls, int mode ) {
+    
+     if ( method == NULL ) return ;
     
      if ( !(RKStore_ItemExists(cls->final_methods, name)) )  {
          
@@ -537,7 +560,30 @@ void fudge_add_final_method( const char* name, fudge_class cls ) {
     RKStore_AddItem(cls->final_methods, NULL, name) ;
 }
 
+void fudge_add_required_class_method( const char* name, fudge_class cls, int mode ) {
+    
+    fudge_method method = NULL ;
+    
+    if ( !(RKStore_ItemExists(cls->final_class_methods, name)) )  {
+        
+        fudge_method_ref ref = RKMem_NewMemOfType(struct fudge_method_ref_s) ;
+        
+        ref->class_of_origin = cls ;
+        
+        ref->method = method ;
+        
+        ref->mode = mode ;
+        
+        if ( (RKStore_ItemExists(cls->class_methods, name)) ) free(RKStore_GetItem(cls->class_methods, name)) ;
+        
+        RKStore_AddItem(cls->class_methods, ref, name) ;
+        
+    }
+}
+
 void fudge_add_class_method( fudge_method method, const char* name, fudge_class cls, int mode ) {
+    
+    if ( method == NULL ) return ;
     
     if ( !(RKStore_ItemExists(cls->final_class_methods, name)) )  {
         
