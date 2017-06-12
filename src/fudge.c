@@ -758,6 +758,8 @@ void fudge_set_data_for_object( const char* protocol_name, void* ref, AnyClass o
             break;
     }
     
+    free(ref) ;
+    
     free(data_ref) ;
 }
 
