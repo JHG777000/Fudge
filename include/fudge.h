@@ -50,7 +50,7 @@ typedef fudge_class (*fudge_get_set_cls_type)(fudge_class* cls) ;
 #define for_fudge_runtime_make_get_set_cls_for_class(classname) static fudge_class classname##_fudge_get_set_cls( fudge_class* cls ) {\
 static fudge_class* the_cls = NULL ;\
  if ( (the_cls == NULL) && (cls != NULL) ) the_cls = cls ;\
- if ( (the_cls == NULL) && (cls == NULL) ) alloc_class(classname) ;\
+ if ( cls == NULL ) alloc_class(classname) ;\
  if (the_cls != NULL ) return *the_cls ;\
 return NULL ;\
 }
