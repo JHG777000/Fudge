@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2016 Jacob Gordon. All rights reserved.
+ Copyright (c) 2017 Jacob Gordon. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  
@@ -264,7 +264,7 @@ AnyClass fudge_get_object_public( AnyClass obj, const char* name ) {
 
 AnyClass fudge_get_object_private( AnyClass obj, const char* name, fudge_class access_class ) {
     
-    fudge_ref ref = RKStore_GetItem(obj->public_refs, name) ;
+    fudge_ref ref = RKStore_GetItem(obj->private_refs, name) ;
     
     if ( ref == NULL ) return NULL ;
     
@@ -277,7 +277,7 @@ AnyClass fudge_get_object_protected( AnyClass obj, const char* name, fudge_class
     
     if ( obj->class_of_object != access_class ) return NULL ;
     
-    fudge_ref ref = RKStore_GetItem(obj->public_refs, name) ;
+    fudge_ref ref = RKStore_GetItem(obj->protected_refs, name) ;
     
     if ( ref == NULL ) return NULL ;
     
