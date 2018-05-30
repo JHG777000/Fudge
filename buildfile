@@ -13,15 +13,25 @@ build FudgeBuild.
 
   on test_enable("-t", "--test", "Enable Fudge test.").
 
+  on toolchain_select("-s", "--select_toolchain=tool", "Select toolchain, clang or gcc.").
+
  end options.
 
  get test_enable.
+
+ get toolchain_select.
+
+ if ( toolchain_select != "clang" && toolchain_select != "gcc" ).
+
+  var toolchain_select := "gcc".
+
+ end if.
 
  message("Building RKLib...\n").
 
  url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/master/buildfile").
 
- subproject RKLibProject(URLForRKLib,nil).
+ subproject RKLibProject("local",URLForRKLib,nil).
 
  message("Building Fudge...\n").
 
@@ -35,11 +45,13 @@ build FudgeBuild.
 
  compiler FudgeCompilerFlags("-Wall", "-I " + include_path, "-I " + rklib_include_path).
 
- toolchain FudgeToolChain("clang",FudgeCompilerFlags).
+ toolchain FudgeToolChain(toolchain_select,FudgeCompilerFlags).
 
  output Fudge("library",FudgeSource,FudgeToolChain).
 
  if ( test_enable ).
+
+  message("Running FudgeTest...\n").
 
   grab RKLib from RKLibProject.
 
@@ -51,6 +63,8 @@ build FudgeBuild.
 
   launch(FudgeTest).
 
+  message("Ran FudgeTest.\n").
+
  end if.
 
 end build.
@@ -59,7 +73,7 @@ build clean_build.
 
  url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/master/buildfile").
 
- subproject RKLibProject(URLForRKLib,"-b clean_build").
+ subproject RKLibProject("local",URLForRKLib,"-b clean_build").
 
  message("Cleaning Fudge...\n").
 
