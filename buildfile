@@ -1,7 +1,7 @@
 
 project := "FudgeProject".
 
-project_version := "1.1".
+project_version := "1.1.0".
 
 buildfile_version := "1.0".
 
