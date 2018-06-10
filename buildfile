@@ -27,13 +27,13 @@ build FudgeBuild.
 
  end if.
 
- message("Building RKLib...\n").
+ message("Building RKLib...").
 
  url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/master/buildfile").
 
  subproject RKLibProject("local",URLForRKLib,nil).
 
- message("Building Fudge...\n").
+ message("Building Fudge...").
 
  make filepath include_path from "resources" to "include".
 
@@ -51,7 +51,7 @@ build FudgeBuild.
 
  if ( test_enable ).
 
-  message("Running FudgeTest...\n").
+  message("Running FudgeTest...").
 
   grab RKLib from RKLibProject.
 
@@ -63,7 +63,7 @@ build FudgeBuild.
 
   launch(FudgeTest).
 
-  message("Ran FudgeTest.\n").
+  message("Ran FudgeTest.").
 
  end if.
 
@@ -75,7 +75,7 @@ build clean_build.
 
  subproject RKLibProject("local",URLForRKLib,"-b clean_build").
 
- message("Cleaning Fudge...\n").
+ message("Cleaning Fudge...").
 
  clean("build").
 
