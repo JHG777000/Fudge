@@ -35,7 +35,7 @@ build FudgeBuild.
 
  grab RKLib from RKLibProject.
 
- return_output RKLib.
+ return_output RKLibProject.
 
  message("Building Fudge...").
 
