@@ -33,8 +33,6 @@ build FudgeBuild.
 
  subproject RKLibProject("local",URLForRKLib,nil).
 
- grab RKLib from RKLibProject.
-
  return_output RKLibProject.
 
  message("Building Fudge...").
@@ -56,6 +54,8 @@ build FudgeBuild.
  if ( test_enable ).
 
   message("Running FudgeTest...").
+
+  grab RKLib from RKLibProject.
 
   files FudgeTestFiles("main.c","Example1.directory","Example2.directory").
 
