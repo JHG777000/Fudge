@@ -84,6 +84,17 @@ Fudge is a framework that enables dynamic and explicit object-oriented programmi
     }
 
 
-#### Dependencies: 
+## Building
 
- -RKLib https://github.com/JHG777000/RKLib
+Fudge uses [builder][1] for its build system.
+
+[1]:https://github.com/JHG777000/builder
+
+To download and build use this command:
+
+
+	builder -u https://raw.githubusercontent.com/JHG777000/Fudge/master/buildfile
+	
+To run tests, add -i __t:
+
+	builder -i __t -u https://raw.githubusercontent.com/JHG777000/Fudge/master/buildfile
