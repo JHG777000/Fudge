@@ -13,7 +13,7 @@ build FudgeBuild.
 
   on test_enable("-t", "--test", "Enable Fudge test.").
 
-  on toolchain_select("-s", "--select_toolchain=tool", "Select toolchain, clang or gcc.").
+  on toolchain_select("-s", "--select_toolchain=tool", "Select toolchain.").
 
  end options.
 
@@ -21,7 +21,7 @@ build FudgeBuild.
 
  get toolchain_select.
 
- if ( toolchain_select != "clang" && toolchain_select != "gcc" ).
+ if ( toolchain_select == nil ).
 
   var toolchain_select := "gcc".
 
