@@ -18,7 +18,7 @@ Fudge is a framework that enables dynamic and explicit object-oriented programmi
 
 * Support for data to be held in a class.
 
-* Classes can be altered durring runtime(adding methods, data to a class) via the class pointer.
+* Classes can be altered during runtime(adding methods, data to a class) via the class pointer.
 
 * Support for subclasses(multiple inheritance).
 
