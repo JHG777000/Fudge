@@ -1,11 +1,11 @@
 
 project := "FudgeProject".
 
-project_version := "1.1.2".
+project_version := "1.1.3".
 
 buildfile_version := "1.0".
 
-url_to_src := "https://github.com/JHG777000/Fudge/archive/master.zip".
+url_to_src := "https://github.com/JHG777000/Fudge/archive/main.zip".
 
 build FudgeBuild.
 
@@ -29,7 +29,7 @@ build FudgeBuild.
 
  message("Building RKLib...").
 
- url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/master/buildfile").
+ url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/main/buildfile").
 
  subproject RKLibProject("local",URLForRKLib,nil).
 
@@ -73,7 +73,7 @@ end build.
 
 build clean_build.
 
- url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/master/buildfile").
+ url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/main/buildfile").
 
  subproject RKLibProject("local",URLForRKLib,"-b clean_build").
 
@@ -84,6 +84,3 @@ build clean_build.
 end build.
 
 default FudgeBuild.
-
-
-
