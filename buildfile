@@ -1,5 +1,5 @@
 project := "FudgeProject".
-project_version := "1.1.4".
+project_version := "1.1.5".
 buildfile_version := "1.0".
 url_to_src := "https://github.com/JHG777000/Fudge/archive/main.zip".
 
@@ -47,15 +47,10 @@ build FudgeBuild.
 end build.
 
 build clean_build.
-
- url URLForRKLib("https://raw.githubusercontent.com/JHG777000/RKLib/main/buildfile").
-
- subproject RKLibProject("local",URLForRKLib,"-b clean_build").
-
+ url URLForVortex("https://raw.githubusercontent.com/JHG777000/Vortex/main/buildfile").
+ subproject VortexProject("local",URLForVortex,"-b clean_build").
  message("Cleaning Fudge...").
-
  clean("build").
-
 end build.
 
 default FudgeBuild.
